@@ -13,6 +13,6 @@ export const CommentSchema = new mongoose.Schema({
 
 export interface IComment {
   id: string;
-  user_id: number;
+  user_id: string;
   comment: string;
 }

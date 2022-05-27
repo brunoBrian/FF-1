@@ -4,8 +4,6 @@ import { Model } from 'mongoose';
 
 import { EntityNotFoundError } from 'src/utils/errors/EntityNotFoundError';
 import { IComment } from './comment.schema';
-import { CreateCommentDto } from './dto/create-comment.dto';
-import { UpdateCommentDto } from './dto/update-comment.dto';
 
 @Injectable()
 export class CommentService {
@@ -13,7 +11,7 @@ export class CommentService {
     @InjectModel('Comment') private readonly commentModel: Model<IComment>,
   ) {}
 
-  async create(createCommentDto: CreateCommentDto) {
+  async create(createCommentDto: IComment) {
     const newComment = new this.commentModel(createCommentDto);
 
     const savedComment = await newComment.save();
@@ -37,8 +35,8 @@ export class CommentService {
     }
   }
 
-  async update(id: string, updateCommentDto: UpdateCommentDto) {
-    this.findOne(id);
+  async update(id: string, updateCommentDto: IComment) {
+    await this.findOne(id);
 
     await this.commentModel.findOneAndUpdate({ _id: id }, updateCommentDto);
 
