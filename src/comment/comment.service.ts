@@ -8,12 +8,11 @@ import { IComment } from './comment.schema';
 @Injectable()
 export class CommentService {
   constructor(
-    @InjectModel('Comment') private readonly commentModel: Model<IComment>,
+    @InjectModel('Comment') public readonly commentModel: Model<IComment>,
   ) {}
 
   async create(createCommentDto: IComment) {
     const newComment = new this.commentModel(createCommentDto);
-
     const savedComment = await newComment.save();
 
     return formatComment(savedComment);

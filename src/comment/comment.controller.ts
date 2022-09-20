@@ -12,7 +12,7 @@ import {
 import { IComment } from './comment.schema';
 import { CommentService } from './comment.service';
 
-@Controller('comment')
+@Controller('comments')
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 

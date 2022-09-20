@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose';
 
 export const CommentSchema = new mongoose.Schema({
   user_id: {
-    type: Number,
+    type: String,
     required: true,
   },
   comment: {
