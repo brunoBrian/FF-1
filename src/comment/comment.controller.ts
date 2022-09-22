@@ -14,6 +14,7 @@ import { CommentService } from './comment.service';
 
 @Controller('comments')
 export class CommentController {
+  // Instancia um objeto commentService e passa como parametro no construtor (injeção de dependencia acontecendo)
   constructor(private readonly commentService: CommentService) {}
 
   @Post()

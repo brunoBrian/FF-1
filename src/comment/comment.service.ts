@@ -1,21 +1,34 @@
+import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { EntityNotFoundError } from 'src/utils/errors/EntityNotFoundError';
 import { IComment } from './comment.schema';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class CommentService {
   constructor(
     @InjectModel('Comment') public readonly commentModel: Model<IComment>,
+    private readonly httpService: HttpService,
   ) {}
 
   async create(createCommentDto: IComment) {
-    const newComment = new this.commentModel(createCommentDto);
-    const savedComment = await newComment.save();
+    try {
+      await firstValueFrom(
+        this.httpService.get(
+          `http://localhost:3000/cards/${createCommentDto.user_id}`,
+        ),
+      );
 
-    return formatComment(savedComment);
+      const newComment = new this.commentModel(createCommentDto);
+      const savedComment = await newComment.save();
+
+      return formatComment(savedComment);
+    } catch (err) {
+      throw new EntityNotFoundError(err.response.data.message);
+    }
   }
 
   async findAll() {
